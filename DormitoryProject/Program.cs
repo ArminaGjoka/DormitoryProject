@@ -1,3 +1,6 @@
+using DormitoryProject.DAL.Context;
+using Microsoft.EntityFrameworkCore;
+
 namespace DormitoryProject
 {
     public class Program
@@ -12,6 +15,10 @@ namespace DormitoryProject
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            // add database dependency
+            _ = builder.Services.AddDbContext<DormitoryContext>(c =>
+            c.UseSqlServer(builder.Configuration.GetConnectionString("Group1Connection")));
 
             var app = builder.Build();
 
