@@ -1,4 +1,4 @@
-﻿using DormitoryProject.Models;
+﻿using DormitoryProject.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace DormitoryProject.DAL.Context

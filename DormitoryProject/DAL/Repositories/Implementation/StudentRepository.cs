@@ -1,6 +1,6 @@
 ﻿using DormitoryProject.DAL.Context;
+using DormitoryProject.DAL.Entities;
 using DormitoryProject.DAL.Repositories.Interfaces;
-using DormitoryProject.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace DormitoryProject.DAL.Repositories.Implementation;
@@ -30,6 +30,12 @@ public class StudentRepository : IStudentRepository
         _ = await _context.SaveChangesAsync();
 
         return result.Entity;
+    }
+
+    public async Task<bool> ExistAsync(string name, string surname)
+    {
+        var result = await _context.Students.AnyAsync(s => s.Name.Equals(name, StringComparison.OrdinalIgnoreCase) && s.Surname.Equals(surname, StringComparison.OrdinalIgnoreCase));
+        return result;
     }
 
     public async Task<Student> GetAsync(int studentId)

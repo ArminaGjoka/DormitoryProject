@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace DormitoryProject.Models
+namespace DormitoryProject.DAL.Entities
 {
     public partial class Announcement
     {
