@@ -1,4 +1,8 @@
+using DormitoryProject.BLL.Services.Implementation;
+using DormitoryProject.BLL.Services.Interface;
 using DormitoryProject.DAL.Context;
+using DormitoryProject.DAL.Repositories.Implementation;
+using DormitoryProject.DAL.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace DormitoryProject
@@ -17,8 +21,11 @@ namespace DormitoryProject
             builder.Services.AddSwaggerGen();
 
             // add database dependency
-            _ = builder.Services.AddDbContext<DormitoryContext>(c =>
-            c.UseSqlServer(builder.Configuration.GetConnectionString("Group1Connection")));
+            _ = builder.Services.AddDbContext<DormitoryContext>(c => c.UseSqlServer(builder.Configuration.GetConnectionString("Group1Connection")));
+
+            //zevendeso interface-in me implementimin 
+            builder.Services.AddScoped<IStudentRepository,StudentRepository>();
+            builder.Services.AddScoped<IStudentService, StudentService>();
 
             var app = builder.Build();
 
