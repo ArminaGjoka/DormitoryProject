@@ -23,5 +23,21 @@ namespace DormitoryProject.DAL.Repositories.Implementation
             return result.Entity;
         }
 
+        //Listo te gjithe announcements aktive:
+        public async Task<List<Announcement>> GetAsync()
+
+        {
+            var result = await _context.Announcements.Where(s => s.IsActive == true).ToListAsync();
+            return result;
+        }
+
+        public async Task<List<Announcement>> GetIdAsync(int roomId)
+        {
+            var result = await _context.Announcements.Where(s => s.RoomId == roomId && s.IsActive == true)
+
+                                                     .ToListAsync();
+            return result;
+        }
+
     }
 }

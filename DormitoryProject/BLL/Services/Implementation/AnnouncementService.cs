@@ -1,36 +1,54 @@
 ﻿using DormitoryProject.BLL.Services.Interface;
 using DormitoryProject.DAL.Repositories.Interfaces;
+using DormitoryProject.DAL.Entities;
 
 namespace DormitoryProject.BLL.Services.Implementation
 {
-    public interface AnnouncementService : IAnnouncementService
+    public class AnnouncementService : IAnnouncementService
     {
         private readonly IAnnouncementRepository _announcementRepository;
-        public AnnouncementService(IAnnouncementRepository studentRepository)
+        public AnnouncementService(IAnnouncementRepository announcementRepository)
         {
-            _studentRepository = studentRepository ?? throw new ArgumentNullException(nameof(studentRepository));
+            _announcementRepository = announcementRepository ?? throw new ArgumentNullException(nameof(announcementRepository));
         }
 
-        public async Task<Student> AddAsync(string name, string surname)
+
+        /*  Do not allow more than one active announcement per dormitory => If exist in database (Check) */
+        public async Task<Announcement> AddAsync(string title, string description, int roomid)
         {
+            // TODO : Check if announcement exist
+            //if (await _announcementRepository.ExistAsync(title, description))
+            // {
+            //     throw new Exception("This announcement already exist");
+            // }
 
-            // TODO : Check if student exist
-            if (await _studentRepository.ExistAsync(name, surname))
+            //TODO : Save announcement in database
+            var announcement = new Announcement
             {
-                throw new Exception("This user already exist");
-            }
+                Title = title,
+                Description = description,
+                PublishedDate = DateTime.Now,
+                RoomId = roomid,
+                IsActive = true
 
-            //TODO : Save user from database
-            var student = new Student
-            {
-                Name = name,
-                Surname = surname
             };
-            var result = await _studentRepository.AddAsync(student);
+            var result = await _announcementRepository.AddAsync(announcement);
 
             //TODO : Return saved user
             return result;
+        }
 
+        public async Task<List<Announcement>> GetAllAsync()
+        {
+            var result = await _announcementRepository.GetAsync();
+            return result;
+        }
+
+        public async Task<List<Announcement>> GetIdAsync(int roomId)
+        {
+            var result = await _announcementRepository.GetIdAsync(roomId);
+
+            return result;
         }
 
     }

@@ -27,6 +27,12 @@ namespace DormitoryProject
             builder.Services.AddScoped<IStudentRepository,StudentRepository>();
             builder.Services.AddScoped<IStudentService, StudentService>();
 
+            builder.Services.AddScoped<IAnnouncementRepository, AnnouncementRepository>();
+            builder.Services.AddScoped<IAnnouncementService, AnnouncementService>();
+
+            builder.Services.AddScoped<IApplicationRepository, ApplicationRepository>();
+            builder.Services.AddScoped<IApplicationService, ApplicationService>();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
