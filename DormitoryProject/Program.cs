@@ -26,7 +26,11 @@ namespace DormitoryProject
             //zevendeso interface-in me implementimin 
             builder.Services.AddScoped<IStudentRepository,StudentRepository>();
             builder.Services.AddScoped<IStudentService, StudentService>();
+          
+            builder.Services.AddScoped<IRoomRepository, RoomRepository>();  
+            builder.Services.AddScoped<IRoomService, RoomService>();
 
+           
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

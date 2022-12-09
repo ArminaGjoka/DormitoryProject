@@ -4,6 +4,7 @@ using DormitoryProject.DAL.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DormitoryProject.Migrations
 {
     [DbContext(typeof(DormitoryContext))]
-    partial class DormitoryContextModelSnapshot : ModelSnapshot
+    [Migration("20221205123618_first")]
+    partial class first
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -123,20 +125,43 @@ namespace DormitoryProject.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Code")
+                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<int>("DormitoryId")
                         .HasColumnType("int");
 
-                    b.Property<bool>("Status")
-                        .HasColumnType("bit");
-
                     b.HasKey("Id");
 
                     b.HasIndex("DormitoryId");
 
                     b.ToTable("Rooms");
+                });
+
+            modelBuilder.Entity("DormitoryProject.DAL.Entities.RoomStudent", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("RoomId")
+                        .HasColumnType("int")
+                        .HasColumnName("RoomID");
+
+                    b.Property<int>("StudentId")
+                        .HasColumnType("int")
+                        .HasColumnName("StudentID");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoomId");
+
+                    b.HasIndex("StudentId");
+
+                    b.ToTable("RoomStudent", (string)null);
                 });
 
             modelBuilder.Entity("DormitoryProject.DAL.Entities.Student", b =>
@@ -203,6 +228,25 @@ namespace DormitoryProject.Migrations
                     b.Navigation("Dormitory");
                 });
 
+            modelBuilder.Entity("DormitoryProject.DAL.Entities.RoomStudent", b =>
+                {
+                    b.HasOne("DormitoryProject.DAL.Entities.Room", "Room")
+                        .WithMany("RoomStudents")
+                        .HasForeignKey("RoomId")
+                        .IsRequired()
+                        .HasConstraintName("FK_RoomStudent_Rooms");
+
+                    b.HasOne("DormitoryProject.DAL.Entities.Student", "Student")
+                        .WithMany("RoomStudents")
+                        .HasForeignKey("StudentId")
+                        .IsRequired()
+                        .HasConstraintName("FK_RoomStudent_Students");
+
+                    b.Navigation("Room");
+
+                    b.Navigation("Student");
+                });
+
             modelBuilder.Entity("DormitoryProject.DAL.Entities.Announcement", b =>
                 {
                     b.Navigation("Applications");
@@ -216,11 +260,15 @@ namespace DormitoryProject.Migrations
             modelBuilder.Entity("DormitoryProject.DAL.Entities.Room", b =>
                 {
                     b.Navigation("Announcements");
+
+                    b.Navigation("RoomStudents");
                 });
 
             modelBuilder.Entity("DormitoryProject.DAL.Entities.Student", b =>
                 {
                     b.Navigation("Applications");
+
+                    b.Navigation("RoomStudents");
                 });
 #pragma warning restore 612, 618
         }

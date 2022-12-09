@@ -1,6 +1,8 @@
 ﻿using DormitoryProject.BLL.Services.Interface;
 using DormitoryProject.DAL.Entities;
 using DormitoryProject.DAL.Repositories.Interfaces;
+using Microsoft.AspNetCore.Mvc;
+using System.Xml.Linq;
 
 namespace DormitoryProject.BLL.Services.Implementation;
 
@@ -31,7 +33,6 @@ public class StudentService : IStudentService
 
         //TODO : Return saved user
         return result;
-
     }
 
     public async Task<List<Student>> GetAllAsync()
@@ -39,4 +40,28 @@ public class StudentService : IStudentService
         var result = await _studentRepository.GetAsync();
         return result;
     }
+
+    public async Task<Student> DeleteAsync(int studentId)
+    {
+        var studentDelete = await _studentRepository.DeleteAsync(studentId);
+      
+        return studentDelete;
+
+    }
+    public async Task<Student> UpdateAsync(int studentId, string name, string surname)
+    {
+        var studentUpdate = new Student
+        {
+            Id= studentId,
+            Name = name,
+            Surname = surname
+        };
+
+        var result = await _studentRepository.UpdateAsync(studentUpdate);
+
+        //TODO : Return saved user
+        return result;
+     
+    }
+
 }
