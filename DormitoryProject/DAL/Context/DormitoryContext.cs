@@ -18,17 +18,16 @@ namespace DormitoryProject.DAL.Context
         public virtual DbSet<Application> Applications { get; set; } = null!;
         public virtual DbSet<Dormitory> Dormitories { get; set; } = null!;
         public virtual DbSet<Room> Rooms { get; set; } = null!;
-        public virtual DbSet<RoomStudent> RoomStudents { get; set; } = null!;
         public virtual DbSet<Student> Students { get; set; } = null!;
 
-        //        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //        {
-        //            if (!optionsBuilder.IsConfigured)
-        //            {
-        //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        //                optionsBuilder.UseSqlServer("Server=DESKTOP-6H1M4BS\\SQLEXPRESS;Database=Dormitory;Trusted_Connection=True;TrustServerCertificate=True");
-        //            }
-        //        }
+//        protected override void onconfiguring(dbcontextoptionsbuilder optionsbuilder)
+//        {
+//            if (!optionsbuilder.isconfigured)
+//            {
+//#warning to protect potentially sensitive information in your connection string, you should move it out of source code. you can avoid scaffolding the connection string by using the name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. for more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?linkid=723263.
+//                optionsbuilder.usesqlserver("server=desktop-6h1m4bs\\sqlexpress;database=dormitory;trusted_connection=true;trustservercertificate=true");
+//            }
+//        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -82,26 +81,7 @@ namespace DormitoryProject.DAL.Context
                     .HasConstraintName("FK_Rooms_Dormitories");
             });
 
-            modelBuilder.Entity<RoomStudent>(entity =>
-            {
-                entity.ToTable("RoomStudent");
-
-                entity.Property(e => e.RoomId).HasColumnName("RoomID");
-
-                entity.Property(e => e.StudentId).HasColumnName("StudentID");
-
-                entity.HasOne(d => d.Room)
-                    .WithMany(p => p.RoomStudents)
-                    .HasForeignKey(d => d.RoomId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_RoomStudent_Rooms");
-
-                entity.HasOne(d => d.Student)
-                    .WithMany(p => p.RoomStudents)
-                    .HasForeignKey(d => d.StudentId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_RoomStudent_Students");
-            });
+           
 
             modelBuilder.Entity<Student>(entity =>
             {
