@@ -1,14 +1,12 @@
 ﻿using DormitoryProject.DAL.Entities;
 
-namespace DormitoryProject.DAL.Repositories.Interfaces
+namespace DormitoryProject.DAL.Repositories.Interfaces;
+
+public interface IApplicationRepository
 {
-    public interface IApplicationRepository 
-    {
+    Task<Application> AddAsync(Application application);
 
-        Task<Application> AddAsync(Application application);
+    Task<bool> ExistAsync(int announcementid, int studentid);
 
-        Task<bool> ExistAsync(int announcementid, int studentid);
-
-        Task<List<Application>> GetAsync();
-    }
+    Task<List<Application>> GetAsync();
 }

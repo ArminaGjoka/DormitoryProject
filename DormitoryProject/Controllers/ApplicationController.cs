@@ -1,4 +1,5 @@
 ﻿using DormitoryProject.BLL.Services.Interface;
+using DormitoryProject.DAL.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DormitoryProject.Controllers
@@ -7,8 +8,6 @@ namespace DormitoryProject.Controllers
     [ApiController]
     public class ApplicationController : ControllerBase
     {
-
-
 
         private readonly IApplicationService _applicationService;
 
@@ -20,28 +19,31 @@ namespace DormitoryProject.Controllers
 
         //shtimi i nje application ne databaze
 
-        [HttpPost("Add a new application")]
+        [HttpPost("Add")]
         public async Task<IActionResult> Create(int announcementid, int studentid)
-
         {
-            if (announcementid == null || studentid == null)
+            if (announcementid <= 0)
             {
                 return BadRequest("Please provide the announcement id and the student id for the application");
             }
-
+            if (studentid <= 0) // ne kontroller kontrollohet a eshte shkruar mire, ne Service kontrollohet a ekziston
+            {
+                return BadRequest("Please provide the student id and the student id for the application");
+            }
 
             var createdApplication = await _applicationService.AddAsync(announcementid, studentid);
 
             return Ok(createdApplication);
         }
 
-        [HttpGet("List all active application")]
+        [HttpGet("List")]
         public async Task<IActionResult> Get()
         {
-            var result = await _applicationService.GetAllAsync();
+            var result = await _applicationService.GetAsync();
 
             return Ok(result);
         }
+
 
 
 

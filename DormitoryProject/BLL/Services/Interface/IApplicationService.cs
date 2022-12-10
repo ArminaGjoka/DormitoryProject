@@ -8,6 +8,6 @@ namespace DormitoryProject.BLL.Services.Interface
         //the announcement id and the user id
         Task<Application> AddAsync(int announcementid, int studentid);
 
-        Task<List<Application>> GetAllAsync();
+        Task<List<Application>> GetAsync();
     }
 }

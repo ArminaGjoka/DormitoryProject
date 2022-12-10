@@ -49,6 +49,13 @@ public class StudentRepository : IStudentRepository
 
         return result;
     }
+    public async Task<bool> ExistAsync(int studentId)
+    {
+        var result = await _context.Students.AnyAsync(s => s.Id == studentId);
+
+        return result;
+    }
+
     public async Task<Student> GetAsync(int studentId)
     {
         var result = await _context.Students.FirstOrDefaultAsync(s => s.Id == studentId);

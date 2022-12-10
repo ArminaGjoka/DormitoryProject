@@ -9,7 +9,6 @@ namespace DormitoryProject.DAL.Repositories.Implementation
     {
         protected DormitoryContext _context;
 
-
         public AnnouncementRepository(DormitoryContext context) //kjo vjen nga Database Dependency tek Program.cs
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
@@ -23,21 +22,32 @@ namespace DormitoryProject.DAL.Repositories.Implementation
             return result.Entity;
         }
 
+        public async Task<bool> ExistAsync(int announcementId)
+        {
+            var result = await _context.Announcements
+                 .AnyAsync(s => s.Id==announcementId && s.IsActive == true);
+      
+            return result;
+        }
+
         //Listo te gjithe announcements aktive:
         public async Task<List<Announcement>> GetAsync()
-
         {
-            var result = await _context.Announcements.Where(s => s.IsActive == true).ToListAsync();
+            var result = await _context.Announcements
+                .Where(s => s.IsActive == true)
+                .ToListAsync();
             return result;
         }
 
         public async Task<List<Announcement>> GetIdAsync(int roomId)
         {
-            var result = await _context.Announcements.Where(s => s.RoomId == roomId && s.IsActive == true)
+            var result = await _context.Announcements
+                .Where(s => s.RoomId == roomId && s.IsActive == true)
+                .ToListAsync();
 
-                                                     .ToListAsync();
             return result;
         }
+
 
     }
 }

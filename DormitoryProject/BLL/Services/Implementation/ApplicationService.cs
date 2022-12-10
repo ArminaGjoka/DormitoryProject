@@ -8,26 +8,37 @@ namespace DormitoryProject.BLL.Services.Implementation
     {
 
         private readonly IApplicationRepository _applicationRepository;
-        public ApplicationService(IApplicationRepository applicationRepository)
+        private readonly IAnnouncementRepository _announcementRepository;
+        private readonly IStudentRepository _studentRepository;
+        public ApplicationService(IApplicationRepository applicationRepository, IAnnouncementRepository announcementRepository, IStudentRepository studentRepository)
         {
             _applicationRepository = applicationRepository ?? throw new ArgumentNullException(nameof(applicationRepository));
+            _announcementRepository = announcementRepository ?? throw new ArgumentNullException(nameof(announcementRepository));
+            _studentRepository = studentRepository ?? throw new ArgumentNullException(nameof(studentRepository));
         }
 
 
         /*  Do not allow more than one active announcement per dormitory => If exist in database (Check) */
         public async Task<Application> AddAsync(int announcementid, int studentid)
         {
-            //TO-DO  as part of the task, the user should ensure appropriate validation
-            //The announcement id is required and it exits
-            //The user id is required and it exits
-            //The user should be able to apply for a certain announcement only once
-            // The user should not be possible to apply to a disabled announcement
+
+            bool studentExist = await _studentRepository.ExistAsync(studentid);
+            if (!studentExist)
+            {
+                throw new Exception("Student dont exist");
+            }
+
+            bool announcementExist = await _announcementRepository.ExistAsync(announcementid);
+            if (!announcementExist)
+            {
+                throw new Exception("Announcement dont exist or is not active");
+            }
 
             if (await _applicationRepository.ExistAsync(announcementid, studentid))
 
-            { throw new Exception("This announcement already exists!"); }
+            { throw new Exception("An application for this student already exists!"); }
 
-            //TODO : Save application in database
+            // Save application in database
             var application = new Application
             {
                 AnnouncementId = announcementid,
@@ -38,11 +49,11 @@ namespace DormitoryProject.BLL.Services.Implementation
             };
             var result = await _applicationRepository.AddAsync(application);
 
-            //TODO : Return saved application
+            // Return saved application
             return result;
         }
 
-        public async Task<List<Application>> GetAllAsync()
+        public async Task<List<Application>> GetAsync()
         {
             var result = await _applicationRepository.GetAsync();
             return result;

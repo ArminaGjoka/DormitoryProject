@@ -9,6 +9,7 @@ namespace DormitoryProject.DAL.Repositories.Interfaces
         Task<List<Announcement>> GetAsync();
 
         Task<List<Announcement>> GetIdAsync(int roomId);
+        Task<bool> ExistAsync(int announcementId);
 
     }
 }

@@ -8,8 +8,6 @@ namespace DormitoryProject.Controllers
     public class AnnouncementController : ControllerBase
     {
 
-
-
         private readonly IAnnouncementService _announcementService;
 
         public AnnouncementController(IAnnouncementService announcementService)
@@ -20,7 +18,7 @@ namespace DormitoryProject.Controllers
 
         //shtimi i nje announcement ne databaze
 
-        [HttpPost("Add a new announcement")]
+        [HttpPost("Add")]
         public async Task<IActionResult> Create(string title, string description, int roomid)
 
         {
@@ -35,7 +33,7 @@ namespace DormitoryProject.Controllers
             return Ok(createdAnnouncement);
         }
 
-        [HttpGet("List all active announcements")]
+        [HttpGet("List")]
         public async Task<IActionResult> Get()
         {
             var result = await _announcementService.GetAllAsync();
@@ -43,9 +41,14 @@ namespace DormitoryProject.Controllers
             return Ok(result);
         }
 
-        [HttpGet("List all active announecement for room id")]
+        [HttpGet("Get/{roomId}")]
         public async Task<IActionResult> Read(int roomId)
         {
+            if (roomId <= 0)
+            {
+                return BadRequest("Please insert a valid roomId");
+            }
+
             var result = await _announcementService.GetIdAsync(roomId);
 
             return Ok(result);

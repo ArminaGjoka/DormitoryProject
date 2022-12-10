@@ -7,22 +7,25 @@ namespace DormitoryProject.BLL.Services.Implementation
     public class AnnouncementService : IAnnouncementService
     {
         private readonly IAnnouncementRepository _announcementRepository;
-        public AnnouncementService(IAnnouncementRepository announcementRepository)
+        private readonly IRoomRepository _roomRepository;
+        public AnnouncementService(IAnnouncementRepository announcementRepository, IRoomRepository roomRepository)
         {
             _announcementRepository = announcementRepository ?? throw new ArgumentNullException(nameof(announcementRepository));
+            _roomRepository = roomRepository ?? throw new ArgumentNullException(nameof(roomRepository));
         }
 
 
         /*  Do not allow more than one active announcement per dormitory => If exist in database (Check) */
-        public async Task<Announcement> AddAsync(string title, string description, int roomid)
+        public async Task<Announcement> AddAsync( string title, string description, int roomid)
         {
-            // TODO : Check if announcement exist
-            //if (await _announcementRepository.ExistAsync(title, description))
-            // {
-            //     throw new Exception("This announcement already exist");
-            // }
+            //Check if room exist
+            bool roomExist = await _roomRepository.ExistAsync(roomid);
+            if (!roomExist)
+            {
+                throw new Exception("Room doesnt exist");
+            }
 
-            //TODO : Save announcement in database
+            //Save announcement in database
             var announcement = new Announcement
             {
                 Title = title,
@@ -30,14 +33,13 @@ namespace DormitoryProject.BLL.Services.Implementation
                 PublishedDate = DateTime.Now,
                 RoomId = roomid,
                 IsActive = true
-
             };
+
             var result = await _announcementRepository.AddAsync(announcement);
 
-            //TODO : Return saved user
+            //Return saved user
             return result;
         }
-
         public async Task<List<Announcement>> GetAllAsync()
         {
             var result = await _announcementRepository.GetAsync();
