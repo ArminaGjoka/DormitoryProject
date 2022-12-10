@@ -26,6 +26,13 @@ namespace DormitoryProject
             //zevendeso interface-in me implementimin 
             builder.Services.AddScoped<IStudentRepository,StudentRepository>();
             builder.Services.AddScoped<IStudentService, StudentService>();
+
+            builder.Services.AddScoped<IAnnouncementRepository, AnnouncementRepository>();
+            builder.Services.AddScoped<IAnnouncementService, AnnouncementService>();
+
+            builder.Services.AddScoped<IApplicationRepository, ApplicationRepository>();
+            builder.Services.AddScoped<IApplicationService, ApplicationService>();
+
           
             builder.Services.AddScoped<IRoomRepository, RoomRepository>();  
             builder.Services.AddScoped<IRoomService, RoomService>();
