@@ -35,6 +35,14 @@ namespace DormitoryProject.Controllers
             return Ok(createdApplication);
         }
 
+        [HttpGet("List all active application")]
+        public async Task<IActionResult> Get()
+        {
+            var result = await _applicationService.GetAllAsync();
+
+            return Ok(result);
+        }
+
 
 
 
