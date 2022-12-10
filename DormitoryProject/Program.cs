@@ -33,6 +33,11 @@ namespace DormitoryProject
             builder.Services.AddScoped<IApplicationRepository, ApplicationRepository>();
             builder.Services.AddScoped<IApplicationService, ApplicationService>();
 
+          
+            builder.Services.AddScoped<IRoomRepository, RoomRepository>();  
+            builder.Services.AddScoped<IRoomService, RoomService>();
+
+           
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
