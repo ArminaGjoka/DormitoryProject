@@ -17,13 +17,13 @@ public class StudentService : IStudentService
     public async Task<Student> AddAsync(string name, string surname)
     {
       
-        // TODO : Check if student exist
+        //Check if student exist
         if( await _studentRepository.ExistAsync(name, surname))
         {
             throw new Exception("This user already exist");
         }
 
-        //TODO : Save user from database
+        //Save user from database
         var student = new Student
         {
             Name = name,
@@ -50,16 +50,20 @@ public class StudentService : IStudentService
     }
     public async Task<Student> UpdateAsync(int studentId, string name, string surname)
     {
-        var studentUpdate = new Student
+        // Get existing student
+        var existingStudent = await _studentRepository.GetAsync(studentId);
+
+        if (existingStudent == null)
         {
-            Id= studentId,
-            Name = name,
-            Surname = surname
-        };
+            throw new Exception("Student do not exist");
+        }
 
-        var result = await _studentRepository.UpdateAsync(studentUpdate);
+        existingStudent.Name = name;
+        existingStudent.Surname = surname;
 
-        //TODO : Return saved user
+        var result = await _studentRepository.UpdateAsync(existingStudent);
+
+        //Return saved user
         return result;
      
     }

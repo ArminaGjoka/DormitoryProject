@@ -27,12 +27,10 @@ public class RoomController : ControllerBase
 
     }
 
-
     [HttpPost("Add")]
     public async Task<IActionResult> Create(string code, int capacity, int dormitoryid)
 
     {
-
         var result1 = await _roomService.AddAsync(code, capacity, dormitoryid);
 
         return Ok(result1);
@@ -41,12 +39,12 @@ public class RoomController : ControllerBase
     [HttpDelete("Delete")]
     public async Task<IActionResult> DeleteAsync(int roomId)
     {
-        if (roomId != 0)
+        if (roomId <= 0)
         {
-            var deletedRoom = await _roomService.DeleteAsync(roomId);
-            return Ok(deletedRoom);
+            return BadRequest("Provide a valid ID");
         }
-        return BadRequest("Provide a valid ID");
+        var deletedRoom = await _roomService.DeleteAsync(roomId);
+        return Ok(deletedRoom);
     }
 
     [HttpPut("Update")]

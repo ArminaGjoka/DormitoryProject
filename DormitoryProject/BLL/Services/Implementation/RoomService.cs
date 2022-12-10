@@ -23,7 +23,7 @@ public class RoomService : IRoomService
             Code = code,
             Capacity = capacity,
             DormitoryId = dormitoryId,
-            Status = true
+           // Status = true
 
         };
         var result = await _roomRepository.AddAsync(room);
@@ -46,13 +46,14 @@ public class RoomService : IRoomService
     }
     public async Task<Room> UpdateAsync(int roomId, string code, int capacity, int dormitoryId, bool status)
     {
+        //TODO : if check if roomId exist the update
         var roomUpdate = new Room
         {
             Id = roomId,
             Code = code,
             Capacity = capacity,
             DormitoryId = dormitoryId,
-            Status = status
+           // Status = status
 
         };
 
