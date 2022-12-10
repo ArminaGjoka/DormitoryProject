@@ -47,5 +47,12 @@ namespace DormitoryProject.DAL.Repositories.Implementation
         //    return result;
         //}
 
+        public async Task<List<Application>> GetAsync()
+        {
+            var result = await _context.Applications.Where(s => s.IsActive == true).ToListAsync();
+            return result;
+
+        }
+
     }
 }

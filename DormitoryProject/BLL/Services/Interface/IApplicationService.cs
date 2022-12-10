@@ -7,5 +7,7 @@ namespace DormitoryProject.BLL.Services.Interface
         //The user should be able to apply to an announcement by providing
         //the announcement id and the user id
         Task<Application> AddAsync(int announcementid, int studentid);
+
+        Task<List<Application>> GetAllAsync();
     }
 }

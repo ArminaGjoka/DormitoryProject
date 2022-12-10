@@ -41,5 +41,11 @@ namespace DormitoryProject.BLL.Services.Implementation
             //TODO : Return saved application
             return result;
         }
+
+        public async Task<List<Application>> GetAllAsync()
+        {
+            var result = await _applicationRepository.GetAsync();
+            return result;
+        }
     }
 }
