@@ -1,10 +1,5 @@
 ﻿using DormitoryProject.BLL.Services.Interface;
-using DormitoryProject.DAL.Context;
-using DormitoryProject.DAL.Entities;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Diagnostics;
-using System.Xml.Linq;
 
 namespace DormitoryProject.Controllers;
 
@@ -31,7 +26,6 @@ public class StudentController : ControllerBase
             return BadRequest("Please provide all information for student");
         }
 
-
         var createdStudent = await _studentService.AddAsync(name, surname);
 
         return Ok(createdStudent);
@@ -45,18 +39,19 @@ public class StudentController : ControllerBase
         return Ok(result);
     }
 
-    [HttpDelete("Delete Student")]
+    [HttpDelete("Delete/{studentId}")]
     public async Task<IActionResult> DeleteAsync(int studentId)
     {
-        if (studentId != 0)
+        if (studentId <= 0)
         {
-            var deletedStudents = await _studentService.DeleteAsync(studentId);
-            return Ok(deletedStudents);
+            return BadRequest("Provide a valid ID");
         }
-        return BadRequest("Provide a valid ID");
+
+        var deletedStudents = await _studentService.DeleteAsync(studentId);
+        return Ok(deletedStudents);
     }
 
-    [HttpPut("Update Student")]
+    [HttpPut("Update")]
     public async Task<IActionResult> UpdateAsync(int studentId,string name, string surname)
     {
             var updatedStudent = await _studentService.UpdateAsync(studentId,name,surname);

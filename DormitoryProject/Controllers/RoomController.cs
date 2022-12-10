@@ -20,7 +20,7 @@ public class RoomController : ControllerBase
             throw new ArgumentNullException(nameof(roomService));
     }
 
-    [HttpGet("Get rooms")] 
+    [HttpGet("Get")] 
     public async Task<IActionResult> GetRooms()
     {
         return Ok(await _roomService.GetAllAsync());
@@ -28,7 +28,7 @@ public class RoomController : ControllerBase
     }
 
 
-    [HttpPost("Add rooms")]
+    [HttpPost("Add")]
     public async Task<IActionResult> Create(string code, int capacity, int dormitoryid)
 
     {
@@ -38,7 +38,7 @@ public class RoomController : ControllerBase
         return Ok(result1);
     }
 
-    [HttpDelete("Delete Room")]
+    [HttpDelete("Delete")]
     public async Task<IActionResult> DeleteAsync(int roomId)
     {
         if (roomId != 0)
@@ -49,7 +49,7 @@ public class RoomController : ControllerBase
         return BadRequest("Provide a valid ID");
     }
 
-    [HttpPut("Update Room")]
+    [HttpPut("Update")]
     public async Task<IActionResult> UpdateAsync(int roomId, string code, int capacity, int dormitoryId, bool status)
     {
         var updatedRoom = await _roomService.UpdateAsync(roomId, code, capacity, dormitoryId, status);
